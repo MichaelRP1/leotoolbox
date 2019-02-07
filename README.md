@@ -19,3 +19,6 @@ Include `client_script '@NativeUI/NativeUI.lua'` in your `__resource.lua` to use
   * Drag/Undrag nearest player
   * Place nearest player in vehicle (once cuffed)
   * And more!
+
+## Credit
+[Frazzle](https://github.com/FrazzIe)
