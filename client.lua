@@ -56,31 +56,10 @@ function spawnCar(car)
     SetEntityAsMissionEntity(vehicle, true, true)
 end
 
-function GetClosestPlayer()
-	local players = GetPlayers()
-	local closestDistance = -1
-	local closestPlayer = -1
-	local ply = PlayerPedId()
-	local plyCoords = GetEntityCoords(ply, 0)
-	
-	for index,value in ipairs(players) do
-		local target = GetPlayerPed(value)
-		if(target ~= ply) then
-			local targetCoords = GetEntityCoords(GetPlayerPed(value), 0)
-			local distance = Vdist(targetCoords["x"], targetCoords["y"], targetCoords["z"], plyCoords["x"], plyCoords["y"], plyCoords["z"])
-			if(closestDistance == -1 or closestDistance > distance) then
-				closestPlayer = value
-				closestDistance = distance
-			end
-		end
-	end
-	return closestPlayer, closestDistance
-end
-
 function cuffPlayer()
-    local plyPed = GetNearestPlayerToEntity(PlayerId())
-    local targetCoords = GetEntityCoords(GetNearestPlayerToEntity(PlayerId()), 0)
-	local plyCoords = GetEntityCoords(PlayerId(), 0)
+    local plyPed = GetNearestPlayerToEntity(PlayerPedId())
+    local targetCoords = GetEntityCoords(GetNearestPlayerToEntity(PlayerPedId()), 0)
+	local plyCoords = GetEntityCoords(PlayerPedId(), 0)
     local distance = Vdist(targetCoords["x"], targetCoords["y"], targetCoords["z"], plyCoords["x"], plyCoords["y"], plyCoords["z"])
     if(distance ~= -1 and distance < 3) then
         SetEnableHandcuffs(plyPed, true)
@@ -92,9 +71,9 @@ function cuffPlayer()
 end
 
 function uncuffPlayer()
-    local plyPed = GetNearestPlayerToEntity(PlayerId())
-    local targetCoords = GetEntityCoords(GetNearestPlayerToEntity(PlayerId()), 0)
-	local plyCoords = GetEntityCoords(PlayerId(), 0)
+    local plyPed = GetNearestPlayerToEntity(PlayerPedId())
+    local targetCoords = GetEntityCoords(GetNearestPlayerToEntity(PlayerPedId()), 0)
+	local plyCoords = GetEntityCoords(PlayerPedId(), 0)
     local distance = Vdist(targetCoords["x"], targetCoords["y"], targetCoords["z"], plyCoords["x"], plyCoords["y"], plyCoords["z"])
     if(distance ~= -1 and distance < 3) then
         SetEnableHandcuffs(plyPed, false)
@@ -105,11 +84,38 @@ function uncuffPlayer()
     end
 end
 
+function dragPlayer()
+    local ped = GetPlayerPed(GetNearestPlayerToEntity(PlayerPedId()))
+    local myped = PlayerPedId()
+    AttachEntityToEntity(myped, ped, 4103, 11816, 0.48, 0.00, 0.0, 0.0, 0.0, 0.0, false, false, false, false, 2, true)
+end
+
+function undragPlayer()
+    DetachEntity(PlayerPedId(), true, false)
+end
+
+function evehiclePlayer()
+    local pos = GetEntityCoords(PlayerPedId())
+    local entityWorld = GetOffsetFromEntityInWorldCoords(PlayerPedId(), 0.0, 20.0, 0.0)
+
+    local rayHandle = CastRayPointToPoint(pos.x, pos.y, pos.z, entityWorld.x, entityWorld.y, entityWorld.z, 10, PlayerPedId(), 0)
+    local _, _, _, _, vehicleHandle = GetRaycastResult(rayHandle)
+
+    if vehicleHandle ~= nil then
+        if(IsVehicleSeatFree(vehicleHandle, 1)) then
+            SetPedIntoVehicle(PlayerPedId(), vehicleHandle, 1)
+        elseif(IsVehicleSeatFree(vehicleHandle, 2)) then
+            SetPedIntoVehicle(PlayerPedId(), vehicleHandle, 2)
+        end
+    end
+end
+
 -- Never Wanted
 Citizen.CreateThread(function()
     Citizen.Wait(1000)
-    SetPoliceIgnorePlayer(PlayerId(), true)
-    SetDispatchCopsForPlayer(PlayerId(), false)
+    SetPoliceIgnorePlayer(PlayerPedId(), true)
+    SetDispatchCopsForPlayer(PlayerPedId(), false)
+    ClearPlayerWantedLevel(PlayerPedId())
     Citizen.InvokeNative(0xDC0F817884CDD856, 1, false)
     Citizen.InvokeNative(0xDC0F817884CDD856, 2, false)
     Citizen.InvokeNative(0xDC0F817884CDD856, 3, false)

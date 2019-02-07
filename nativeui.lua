@@ -106,6 +106,9 @@ Citizen.CreateThread(function()
             mainMenu:Visible(not mainMenu:Visible())
             vehMenu = false
         end
+        if IsControlJustPressed(1, 166) then
+            leoMenu:Visible(not leoMenu:Visible())
+        end
     end
 end)
 
@@ -122,5 +125,32 @@ function cuffOption(menu)
     menu:AddItem(Item)
 end
 
+function uncuffOption(menu)
+    local Item = NativeUI.CreateItem("Uncuff", "Uncuff the person closest to you")
+    menu.OnItemSelect = function(sender, item, index)
+        uncuffPlayer()
+    end
+    menu:AddItem(Item)
+end
+
+function dragOption(menu)
+    local Item = NativeUI.CreateItem("Drag", "Drag the person closest to you")
+    menu.OnItemSelect = function(sender, item, index)
+        dragPlayer()
+    end
+    menu:AddItem(Item)
+end
+
+function undragOption(menu)
+    local Item = NativeUI.CreateItem("Undrag", "Undrag the person closest to you")
+    menu.OnItemSelect = function(sender, item, index)
+        undragPlayer()
+    end
+    menu:AddItem(Item)
+end
+
 cuffOption(leoMenu)
+uncuffOption(leoMenu)
+dragOption(leoMenu)
+undragOption(leoMenu)
 _menuPool:RefreshIndex()
