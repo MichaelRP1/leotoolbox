@@ -95,19 +95,29 @@ function undragPlayer()
 end
 
 function evehiclePlayer()
-    local pos = GetEntityCoords(PlayerPedId())
-    local entityWorld = GetOffsetFromEntityInWorldCoords(PlayerPedId(), 0.0, 20.0, 0.0)
+    local pos = GetEntityCoords(GetNearestPlayerToEntity(PlayerPedId()))
+    local entityWorld = GetOffsetFromEntityInWorldCoords(GetNearestPlayerToEntity(PlayerPedId()), 0.0, 20.0, 0.0)
 
-    local rayHandle = CastRayPointToPoint(pos.x, pos.y, pos.z, entityWorld.x, entityWorld.y, entityWorld.z, 10, PlayerPedId(), 0)
+    local rayHandle = CastRayPointToPoint(pos.x, pos.y, pos.z, entityWorld.x, entityWorld.y, entityWorld.z, 10, GetNearestPlayerToEntity(PlayerPedId()), 0)
     local _, _, _, _, vehicleHandle = GetRaycastResult(rayHandle)
 
     if vehicleHandle ~= nil then
         if(IsVehicleSeatFree(vehicleHandle, 1)) then
-            SetPedIntoVehicle(PlayerPedId(), vehicleHandle, 1)
+            SetPedIntoVehicle(GetNearestPlayerToEntity(PlayerPedId()), vehicleHandle, 1)
+            SetPedCanRagdoll(GetNearestPlayerToEntity(PlayerPedId(), true)
         elseif(IsVehicleSeatFree(vehicleHandle, 2)) then
-            SetPedIntoVehicle(PlayerPedId(), vehicleHandle, 2)
+            SetPedIntoVehicle(GetNearestPlayerToEntity(PlayerPedId()), vehicleHandle, 2)
+            SetPedCanRagdoll(GetNearestPlayerToEntity(PlayerPedId(), true)
         end
     end
+end
+
+function lvehiclePlayer()
+    local ped = GetNearestPlayerToEntity(PlayerPedId())
+    local ped1 = PlayerPedId()
+    ClearPedTasksImmediately(ped)
+    local ppos = GetEntityCoords(PlayerPedId())
+    SetEntityCoords(ped, ppos)
 end
 
 -- Never Wanted

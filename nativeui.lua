@@ -101,12 +101,13 @@ _menuPool:RefreshIndex()
 Citizen.CreateThread(function()
     while true do
         Citizen.Wait(0)
+        local ped = PlayerPedId()
         _menuPool:ProcessMenus()
         if vehMenu == true then
             mainMenu:Visible(not mainMenu:Visible())
             vehMenu = false
         end
-        if IsControlJustPressed(1, 166) then
+        if IsControlJustPressed(1, 166) and DoesEntityExist(ped) and not IsEntityDead(ped) and CheckSkin(ped) then
             leoMenu:Visible(not leoMenu:Visible())
         end
     end
@@ -149,8 +150,83 @@ function undragOption(menu)
     menu:AddItem(Item)
 end
 
+function evehOption(menu)
+    local Item = NativeUI.CreateItem("Make Player Enter Vehicle", "Make the person closest to you enter the vehicle closest to you")
+    menu.OnItemSelect = function(sender, item, index)
+        evehiclePlayer()
+    end
+    menu:AddItem(Item)
+end
+
+function lvehOption(menu)
+    local Item = NativeUI.CreateItem("Make Player Exit Vehicle", "Make the person closest to you exit the vehicle closest to you")
+    menu.OnItemSelect = function(sender, item, index)
+        lvehiclePlayer()
+    end
+    menu:AddItem(Item)
+end
+
+function entityOption(menu)
+    local submenu = _menuPool:AddSubMenu(menu, "Spawn Objects")
+    for i = 1, 1 do
+        local Item = NativeUI.CreateItem("Steel Barrier", "Spawn Steel Barrier")
+        Item.Activated = function(ParentMenu, SelectedItem)
+            spawnEntity("")
+        end
+        local Item2 = NativeUI.CreateItem("Wood Barrier", "Spawn Wood Barrier")
+        Item2.Activated = function(ParentMenu, SelectedItem)
+            spawnEntity("")
+        end
+        local Item3 = NativeUI.CreateItem("Road Work", "Spawn Road Work Sign")
+        Item3.Activated = function(ParentMenu, SelectedItem)
+            spawnEntity("")
+        end
+        local Item4 = NativeUI.CreateItem("Road Work LED", "Spawn Road Work LED Sign")
+        Item4.Activated = function(ParentMenu, SelectedItem)
+            spawnEntity("")
+        end
+    submenu:AddItem(Item)
+    submenu:AddItem(Item2)
+    submenu:AddItem(Item3)
+    submenu:AddItem(Item4)
+    end
+end
+
 cuffOption(leoMenu)
 uncuffOption(leoMenu)
 dragOption(leoMenu)
 undragOption(leoMenu)
+evehOption(leoMenu)
+lvehOption(leoMenu)
 _menuPool:RefreshIndex()
+
+-- Make Sure Player is in Correct PED
+local skins = {
+	"s_m_y_cop_01",
+	"s_f_y_cop_01",
+	"s_m_y_hwaycop_01",
+	"s_m_y_sheriff_01",
+	"s_f_y_sheriff_01",
+	"s_m_y_ranger_01",
+    "s_f_y_ranger_01",
+    "csb_mweather",
+    "s_m_m_armoured_01",
+    "s_m_m_armoured_02",
+    "s_m_y_blackops_02",
+    "s_m_y_fireman_01",
+    "s_m_y_grip_01",
+    "s_m_y_marine_01",
+    "s_m_y_marine_02",
+    "s_m_y_marine_03",
+    "s_m_y_ranger_01",
+    "s_m_y_swat_01",
+}
+
+function CheckSkin(ped)
+	for i = 1, #skins do
+		if GetHashKey(skins[i]) == GetEntityModel(ped) then
+			return true
+		end
+	end
+	return false
+end
