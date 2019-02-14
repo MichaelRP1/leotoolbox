@@ -22,3 +22,4 @@ Include `client_script '@NativeUI/NativeUI.lua'` in your `__resource.lua` to use
 
 ## Credit
 [Frazzle](https://github.com/FrazzIe)
+[Jeva](https://www.youtube.com/channel/UCI7x329xu2rLbtVvFPVIhiQ) - Inspiration / Foundation
