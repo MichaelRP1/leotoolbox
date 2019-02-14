@@ -19,7 +19,14 @@ Include `client_script '@NativeUI/NativeUI.lua'` in your `__resource.lua` to use
   * Drag/Undrag nearest player
   * Place nearest player in vehicle (once cuffed)
   * And more!
+  
+## Support
+
+At this time, no support is availible for this resource, so please use it at your own risk.
+
+Cronus Gaming staff is not under any obligation to help you with this resource
 
 ## Credit
 [Frazzle](https://github.com/FrazzIe)
+
 [Jeva](https://www.youtube.com/channel/UCI7x329xu2rLbtVvFPVIhiQ) - Inspiration / Foundation
