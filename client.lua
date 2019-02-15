@@ -100,7 +100,7 @@ function evehiclePlayer()
     local pos = GetEntityCoords(GetNearestPlayerToEntity(PlayerPedId()))
     local entityWorld = GetOffsetFromEntityInWorldCoords(GetNearestPlayerToEntity(PlayerPedId()), 0, 0.0, 20.0, 0.0)
 
-    local rayHandle = CastRayPointToPoint(pos.x, pos.y, pos.z, entityWorld.x, entityWorld.y, entityWorld.z, 10, GetNearestPlayerToEntity(PlayerPedId()),)
+    local rayHandle = CastRayPointToPoint(pos.x, pos.y, pos.z, entityWorld.x, entityWorld.y, entityWorld.z, 10, GetNearestPlayerToEntity(PlayerPedId()))
     local _, _, _, _, vehicleHandle = GetRaycastResult(rayHandle)
 
     if vehicleHandle ~= nil then
