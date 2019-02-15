@@ -107,7 +107,7 @@ Citizen.CreateThread(function()
             mainMenu:Visible(not mainMenu:Visible())
             vehMenu = false
         end
-        if IsControlJustPressed(1, 166) and DoesEntityExist(ped) and not IsEntityDead(ped) and CheckSkin(ped) then
+        if IsControlJustPressed(1, 166) and DoesEntityExist(ped) and CheckSkin(ped) then
             leoMenu:Visible(not leoMenu:Visible())
         end
     end
@@ -171,19 +171,15 @@ function entityOption(menu)
     for i = 1, 1 do
         local Item = NativeUI.CreateItem("Steel Barrier", "Spawn Steel Barrier")
         Item.Activated = function(ParentMenu, SelectedItem)
-            spawnEntity("")
+            spawnEntity("prop_barrier_work04a")
         end
         local Item2 = NativeUI.CreateItem("Wood Barrier", "Spawn Wood Barrier")
         Item2.Activated = function(ParentMenu, SelectedItem)
-            spawnEntity("")
-        end
-        local Item3 = NativeUI.CreateItem("Road Work", "Spawn Road Work Sign")
-        Item3.Activated = function(ParentMenu, SelectedItem)
-            spawnEntity("")
+            spawnEntity("prop_barrier_work05")
         end
         local Item4 = NativeUI.CreateItem("Road Work LED", "Spawn Road Work LED Sign")
         Item4.Activated = function(ParentMenu, SelectedItem)
-            spawnEntity("")
+            spawnEntity("prop_trafficdiv_01")
         end
     submenu:AddItem(Item)
     submenu:AddItem(Item2)
@@ -192,12 +188,24 @@ function entityOption(menu)
     end
 end
 
+function despawnOption(menu)
+    local amount = {}
+    for i = 1, 100 do amount[i] = i end
+    local Item = NativeUI.CreateSliderItem("Despawn Objects", amount, 5, "Despawn all objects within a radius", false)
+    menu.OnItemSelect = function(sender, item, index)
+        rad = item:IndexToItem(index)
+        despawnProp(rad)
+    end
+    menu:AddItem(Item)
+end
+
 cuffOption(leoMenu)
 uncuffOption(leoMenu)
 dragOption(leoMenu)
 undragOption(leoMenu)
 evehOption(leoMenu)
 lvehOption(leoMenu)
+despawnOption(leoMenu)
 _menuPool:RefreshIndex()
 
 -- Make Sure Player is in Correct PED
