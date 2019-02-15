@@ -58,8 +58,8 @@ end
 
 function cuffPlayer()
     local plyPed = GetNearestPlayerToEntity(PlayerPedId())
-    local targetCoords = GetEntityCoords(GetNearestPlayerToEntity(PlayerPedId()), 0)
-	local plyCoords = GetEntityCoords(PlayerPedId(), 0)
+    local targetCoords = GetEntityCoords(GetNearestPlayerToEntity(PlayerPedId()))
+	local plyCoords = GetEntityCoords(PlayerPedId())
     local distance = Vdist(targetCoords["x"], targetCoords["y"], targetCoords["z"], plyCoords["x"], plyCoords["y"], plyCoords["z"])
     if(distance ~= -1 and distance < 3) then
         SetEnableHandcuffs(plyPed, true)
@@ -72,8 +72,8 @@ end
 
 function uncuffPlayer()
     local plyPed = GetNearestPlayerToEntity(PlayerPedId())
-    local targetCoords = GetEntityCoords(GetNearestPlayerToEntity(PlayerPedId()), 0)
-	local plyCoords = GetEntityCoords(PlayerPedId(), 0)
+    local targetCoords = GetEntityCoords(GetNearestPlayerToEntity(PlayerPedId()))
+	local plyCoords = GetEntityCoords(PlayerPedId())
     local distance = Vdist(targetCoords["x"], targetCoords["y"], targetCoords["z"], plyCoords["x"], plyCoords["y"], plyCoords["z"])
     if(distance ~= -1 and distance < 3) then
         SetEnableHandcuffs(plyPed, false)
@@ -88,17 +88,19 @@ function dragPlayer()
     local ped = GetPlayerPed(GetNearestPlayerToEntity(PlayerPedId()))
     local myped = PlayerPedId()
     AttachEntityToEntity(myped, ped, 4103, 11816, 0.48, 0.00, 0.0, 0.0, 0.0, 0.0, false, false, false, false, 2, true)
+    notify("Now dragging " .. ped)
 end
 
 function undragPlayer()
     DetachEntity(PlayerPedId(), true, false)
+    notify("You are not dragging anyone anymore")
 end
 
 function evehiclePlayer()
     local pos = GetEntityCoords(GetNearestPlayerToEntity(PlayerPedId()))
-    local entityWorld = GetOffsetFromEntityInWorldCoords(GetNearestPlayerToEntity(PlayerPedId()), 0.0, 20.0, 0.0)
+    local entityWorld = GetOffsetFromEntityInWorldCoords(GetNearestPlayerToEntity(PlayerPedId()), 0, 0.0, 20.0, 0.0)
 
-    local rayHandle = CastRayPointToPoint(pos.x, pos.y, pos.z, entityWorld.x, entityWorld.y, entityWorld.z, 10, GetNearestPlayerToEntity(PlayerPedId()), 0)
+    local rayHandle = CastRayPointToPoint(pos.x, pos.y, pos.z, entityWorld.x, entityWorld.y, entityWorld.z, 10, GetNearestPlayerToEntity(PlayerPedId()),)
     local _, _, _, _, vehicleHandle = GetRaycastResult(rayHandle)
 
     if vehicleHandle ~= nil then
@@ -110,6 +112,7 @@ function evehiclePlayer()
             SetPedCanRagdoll(GetNearestPlayerToEntity(PlayerPedId(), true)
         end
     end
+    notify("You just placed someone in your vehicle")
 end
 
 function lvehiclePlayer()
@@ -118,6 +121,22 @@ function lvehiclePlayer()
     ClearPedTasksImmediately(ped)
     local ppos = GetEntityCoords(PlayerPedId())
     SetEntityCoords(ped, ppos)
+    notify("You have just made someone leave your vehicle")
+end
+
+function spawnProp(hash)
+    local pedLoc = GetEntityCoords(PlayerPedId())
+    local x, y, z = table.unpack(pedLoc, false))
+    local prop = GetHashKey(hash)
+    CreateObject(prop, x, y, z, true, false, false)
+    notify("You have just spawned an object")
+end
+
+function despawnProp(rad)
+    local pedLoc = GetEntityCoords(PlayerPedId())
+    local x, y, z = table.unpack(pedLoc, false))
+    ClearAreaOfObjects(x, y, z, rad)
+    notify("You have just despawned all props within " .. rad .. " radius")
 end
 
 -- Never Wanted
