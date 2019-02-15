@@ -233,8 +233,9 @@ local skins = {
 function CheckSkin(ped)
 	for i = 1, #skins do
 		if GetHashKey(skins[i]) == GetEntityModel(ped) then
-			return true
-		end
+            return true
+        else
+            return false
+        end
 	end
-	return false
 end
