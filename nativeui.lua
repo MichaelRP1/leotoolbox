@@ -101,14 +101,11 @@ _menuPool:RefreshIndex()
 Citizen.CreateThread(function()
     while true do
         Citizen.Wait(0)
-        local ped = PlayerPedId()
+        Policeped = PlayerPedId()
         _menuPool:ProcessMenus()
         if vehMenu == true then
             mainMenu:Visible(not mainMenu:Visible())
             vehMenu = false
-        end
-        if IsControlJustPressed(1, 166) and DoesEntityExist(ped) and CheckSkin(ped) then
-            leoMenu:Visible(not leoMenu:Visible())
         end
     end
 end)
@@ -117,6 +114,7 @@ end)
 -- Start LEO Menu
 leoMenu = NativeUI.CreateMenu("LEO Toolbox", "~b~CRONUS GAMING LEO UTILITIES MENU")
 _menuPool:Add(leoMenu)
+leostuff = false
 
 function cuffOption(menu)
     local Item = NativeUI.CreateItem("Cuff", "Cuff the person closest to you")
@@ -208,6 +206,17 @@ lvehOption(leoMenu)
 despawnOption(leoMenu)
 _menuPool:RefreshIndex()
 
+Citizen.CreateThread(function()
+    while true do
+        Citizen.Wait(0)
+        _menuPool:ProcessMenus()
+        if IsControlJustPressed(1, 166) and leostuff == true then
+            leoMenu:Visible(not leoMenu:Visible())
+            leostuff = false
+        end
+    end
+end)
+
 -- Make Sure Player is in Correct PED
 local skins = {
 	"s_m_y_cop_01",
@@ -232,10 +241,8 @@ local skins = {
 
 function CheckSkin(ped)
 	for i = 1, #skins do
-		if GetHashKey(skins[i]) == GetEntityModel(ped) then
-            return true
-        else
-            return false
+		if GetHashKey(skins[i]) == GetEntityModel(PlayerId()) then
+            leostuff = true
         end
 	end
 end
