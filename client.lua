@@ -112,6 +112,7 @@ function evehiclePlayer()
             SetPedCanRagdoll(GetNearestPlayerToEntity(PlayerPedId(), true))
         end
     end
+    -- Notify User
     notify("You just placed someone in your vehicle")
 end
 
