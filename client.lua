@@ -103,6 +103,7 @@ function evehiclePlayer()
     local rayHandle = CastRayPointToPoint(pos.x, pos.y, pos.z, entityWorld.x, entityWorld.y, entityWorld.z, 10, GetNearestPlayerToEntity(PlayerPedId()))
     local _, _, _, _, vehicleHandle = GetRaycastResult(rayHandle)
 
+    -- Place Player in Whichevery Vehicle Availible
     if vehicleHandle ~= nil then
         if(IsVehicleSeatFree(vehicleHandle, 1)) then
             SetPedIntoVehicle(GetNearestPlayerToEntity(PlayerPedId()), vehicleHandle, 1)
