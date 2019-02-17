@@ -116,22 +116,31 @@ function evehiclePlayer()
 end
 
 function lvehiclePlayer()
+    -- Person leaving vehicle
     local ped = GetNearestPlayerToEntity(PlayerPedId())
+    -- Person executing command
     local ped1 = PlayerPedId()
+    -- Make person leave vehicle
     ClearPedTasksImmediately(ped)
+    -- Teleport to person executing command
     local ppos = GetEntityCoords(PlayerPedId())
     SetEntityCoords(ped, ppos)
+    -- Notify user if it succeeded
     notify("You have just made someone leave your vehicle")
 end
 
+-- Spawns prop with a prop name
 function spawnProp(hash)
     local pedLoc = GetEntityCoords(PlayerPedId())
     local x, y, z = table.unpack(pedLoc, false)
+    -- So hash doesn't have to be used in code.
     local prop = GetHashKey(hash)
     CreateObject(prop, x, y, z, true, false, false)
+    -- Notifying if succeded
     notify("You have just spawned an object")
 end
 
+-- Despawn prop created with function spawnProp
 function despawnProp(rad)
     local pedLoc = GetEntityCoords(PlayerPedId())
     local x, y, z = table.unpack(pedLoc, false)
@@ -141,6 +150,7 @@ end
 
 -- Never Wanted
 Citizen.CreateThread(function()
+-- Every second so it doesn't take up much CPU time.
     Citizen.Wait(1000)
     SetPoliceIgnorePlayer(PlayerPedId(), true)
     SetDispatchCopsForPlayer(PlayerPedId(), false)
