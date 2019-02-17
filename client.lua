@@ -100,16 +100,16 @@ function evehiclePlayer()
     local pos = GetEntityCoords(GetNearestPlayerToEntity(PlayerPedId()))
     local entityWorld = GetOffsetFromEntityInWorldCoords(GetNearestPlayerToEntity(PlayerPedId()), 0, 0.0, 20.0, 0.0)
 
-    local rayHandle = CastRayPointToPoint(pos.x, pos.y, pos.z, entityWorld.x, entityWorld.y, entityWorld.z, 10, GetNearestPlayerToEntity(PlayerPedId()),)
+    local rayHandle = CastRayPointToPoint(pos.x, pos.y, pos.z, entityWorld.x, entityWorld.y, entityWorld.z, 10, GetNearestPlayerToEntity(PlayerPedId()))
     local _, _, _, _, vehicleHandle = GetRaycastResult(rayHandle)
 
     if vehicleHandle ~= nil then
         if(IsVehicleSeatFree(vehicleHandle, 1)) then
             SetPedIntoVehicle(GetNearestPlayerToEntity(PlayerPedId()), vehicleHandle, 1)
-            SetPedCanRagdoll(GetNearestPlayerToEntity(PlayerPedId(), true)
+            SetPedCanRagdoll(GetNearestPlayerToEntity(PlayerPedId(), true))
         elseif(IsVehicleSeatFree(vehicleHandle, 2)) then
             SetPedIntoVehicle(GetNearestPlayerToEntity(PlayerPedId()), vehicleHandle, 2)
-            SetPedCanRagdoll(GetNearestPlayerToEntity(PlayerPedId(), true)
+            SetPedCanRagdoll(GetNearestPlayerToEntity(PlayerPedId(), true))
         end
     end
     notify("You just placed someone in your vehicle")
@@ -126,7 +126,7 @@ end
 
 function spawnProp(hash)
     local pedLoc = GetEntityCoords(PlayerPedId())
-    local x, y, z = table.unpack(pedLoc, false))
+    local x, y, z = table.unpack(pedLoc, false)
     local prop = GetHashKey(hash)
     CreateObject(prop, x, y, z, true, false, false)
     notify("You have just spawned an object")
@@ -134,7 +134,7 @@ end
 
 function despawnProp(rad)
     local pedLoc = GetEntityCoords(PlayerPedId())
-    local x, y, z = table.unpack(pedLoc, false))
+    local x, y, z = table.unpack(pedLoc, false)
     ClearAreaOfObjects(x, y, z, rad)
     notify("You have just despawned all props within " .. rad .. " radius")
 end
