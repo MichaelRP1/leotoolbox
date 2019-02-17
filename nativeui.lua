@@ -217,7 +217,7 @@ Citizen.CreateThread(function()
     end
 end)
 
--- Make Sure Player is in Correct PED
+-- Make Sure Player is in Correct PED for F5 menu
 local skins = {
 	"s_m_y_cop_01",
 	"s_f_y_cop_01",
